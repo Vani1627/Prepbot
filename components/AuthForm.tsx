@@ -13,7 +13,7 @@ import FormField from "@/components/ui/FormField";
 import {useRouter} from "next/navigation";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from "@/firebase/client";
-import {signIn, signUp} from "@/lib/actions/auth..action";
+import {signIn, signUp} from "@/lib/actions/auth.action";
 
 // Define FormType
 type FormType = "sign-in" | "sign-up";

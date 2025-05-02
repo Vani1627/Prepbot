@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { getRandomInterviewCover } from "@/lib/utils";
@@ -9,17 +9,17 @@ import DisplayTechIcons from "@/components/DisplayTechIcons";
 // Define props type
 interface InterviewCardProps {
     interviewId: string;
-    userId: string;
     role: string;
     type: string;
     techstack: string[];
     createdAt?: Date;
-    feedback?: { createdAt: Date; totalScore?: number; finalAssessment?: string } | null;
+    feedback?: Partial<{ createdAt: Date; totalScore: number; finalAssessment: string }>;
 }
 
-const InterviewCard = ({ interviewId, userId, role, type, techstack, createdAt, feedback }: InterviewCardProps) => {
-    const normalizationType = /mix/gi.test(type) ? "Mixed" : type;
+const InterviewCard: React.FC<InterviewCardProps> = ({ interviewId, role, type, techstack, createdAt, feedback }) => {
+    const normalizationType = type.toLowerCase().includes("mix") ? "Mixed" : type;
     const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format("MMM DD, YYYY");
+    const coverImage = useMemo(() => getRandomInterviewCover(), []);
 
     return (
         <div className="card-border w-[360px] max-sm:w-full min-h-96">
@@ -29,7 +29,7 @@ const InterviewCard = ({ interviewId, userId, role, type, techstack, createdAt, 
                         <p className="badge-text">{normalizationType}</p>
                     </div>
 
-                    <Image src={getRandomInterviewCover()} alt="cover image" width={90} height={90} className="rounded-full object-fit size-[90px]" />
+                    <Image src={coverImage} alt="cover image" width={90} height={90} className="rounded-full object-cover w-[90px] h-[90px]" />
                     <h3 className="mt-5 capitalize">{role} Interview</h3>
 
                     <div className="flex flex-col gap-5 mt-3">

@@ -15,6 +15,7 @@ interface FormFieldProps<T extends FieldValues> {
     label: string;
     placeholder?: string;
     type?: "text" | "email" | "password" | "file";
+    description?: string;
 }
 
 const FormField = <T extends FieldValues>({
@@ -23,6 +24,7 @@ const FormField = <T extends FieldValues>({
                                               label,
                                               placeholder,
                                               type = "text",
+                                              description,
                                           }: FormFieldProps<T>) => {
     return (
         <Controller
@@ -31,13 +33,16 @@ const FormField = <T extends FieldValues>({
             render={({ field }) => (
                 <FormItem>
                     <FormLabel className="label">{label}</FormLabel>
+                    {description && <FormDescription>{description}</FormDescription>}
                     <FormControl>
                         <Input
                             className="input"
                             placeholder={placeholder}
                             type={type}
-                            {...field}
-                         />
+                            value={field.value}
+                            onChange={field.onChange}
+                            ref={field.ref}
+                        />
                     </FormControl>
                     <FormMessage />
                 </FormItem>
